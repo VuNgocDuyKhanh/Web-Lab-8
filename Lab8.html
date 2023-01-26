@@ -1,0 +1,78 @@
+<!Doctype HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+	<title>Lab8</title>
+	<link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+
+    <body>
+       <div class="list">
+            <div class="content">
+                <input type="text">
+                <input type="number">
+                <button onClick="UpArrow(this)">↑</button>
+                <button onClick="DownArrow(this)">↓</button>
+                <button onClick="DeleteLine(this)">x</button>  
+            </div>  
+        </div>  
+        <script>
+            let node = document.querySelector(".content").cloneNode(true);
+            
+            const AddNewLine = () => {
+                document.querySelector(".list").append(node.cloneNode(true));
+            }
+            
+            const DeleteLine = (pointer) => {
+                pointer.parentElement.remove();
+            }
+            
+            const UpArrow = (pointer) => {
+                let previous = pointer.parentElement.previousElementSibling;
+                if (previous) pointer.parentElement.after(previous);
+            }
+            
+            const DownArrow = (pointer) => {
+                let next = pointer.parentElement.nextElementSibling;
+                if (next) pointer.parentElement.before(next);
+            }
+
+            const Wrapper = document.createElement('div');
+            Wrapper.classList.add('Wrapper');
+            const MainBut = document.createElement('div');
+            MainBut.classList.add('MainBut');
+               const AddButton = document.createElement('button');
+               AddButton.classList.add('AddButton');
+               const body = document.body;
+               body.append(Wrapper);
+               Wrapper.append(MainBut);
+               AddButton.textContent = 'Добавить элемент';
+               AddButton.setAttribute("onclick", "AddNewLine()");
+               const SaveButton = document.createElement('button');  
+               SaveButton.classList.add('SaveButton');
+               SaveButton.textContent = 'Сохранить';
+               SaveButton.setAttribute("onclick", "Save()");
+               MainBut.append(AddButton);
+               MainBut.append(SaveButton);
+
+               const Print = document.createElement('div');
+               Print.classList.add('Print');
+               MainBut.append(Print);
+               
+               console.log(body)
+
+                const Save = () => {           
+                let string = "";
+                let containers = document.querySelectorAll(".content");
+                
+                for (let node of containers) {
+                    let key = node.children[0].value;
+                    let value = node.children[1].value;
+                    
+                    string += `"${key}":"${value}",`;
+                }
+                document.querySelector(".Print").innerHTML = `{${string.slice(0, -1)}}`;
+            }
+        </script>
+    </body>
+</html>
